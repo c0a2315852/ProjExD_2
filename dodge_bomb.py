@@ -112,7 +112,6 @@ def main():
 
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-
         screen.blit(kk_img, kk_rct)
 
         bd_rct.move_ip(vx, vy)  # 爆弾の移動
