@@ -11,7 +11,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 DERUTA = {pg.K_UP: (0, -5), pg.K_DOWN: (0, +5),
          pg.K_LEFT: (-5, 0), pg.K_RIGHT: (+5, 0)}  # 移動量辞書 練習1
 
-def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:
+def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:  # 練習３
     """
     こうかとんRect, または、爆弾Rectの画面内外判定用の関数
     引数：こうかとんRect、または、爆弾Rect
@@ -47,6 +47,12 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        if kk_rct.colliderect(bd_rct):  # 練習４
+            # こうかとんと爆弾がぶつかったら(= True)
+            print("Game Over")
+            return
+        
         screen.blit(bg_img, [0, 0])
         
         key_lst = pg.key.get_pressed()
@@ -72,7 +78,7 @@ def main():
 
         screen.blit(kk_img, kk_rct)
 
-        bd_rct.move_ip(vx, vy) 
+        bd_rct.move_ip(vx, vy)  # 爆弾の移動
         screen.blit(bd_img, bd_rct)  # 爆弾の表示
         
         yoko, tate = check_bound(bd_rct)
