@@ -15,12 +15,13 @@ DERUTA = {pg.K_UP: (0, -5), pg.K_DOWN: (0, +5),
 #houkou = {pg.K_UP: (0, -5)}  # 演習１
 
 accs = [a for a in range(1, 11)]  # 加速度のリスト
-for r in range(1, 11):
+for r in range(1, 11):  # 演習２
     bb_img = pg.Surface((20*r, 20*r))
     pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
 
 
 cry_img = pg.image.load("fig/1.png")  # 泣いているこうかとん
+
 
 def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:  # 練習３
     """
@@ -35,10 +36,12 @@ def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:  # 練習３
         tate = False
     return yoko, tate
 
+
 def game_over(screen):  # 演習３
     """
     こうかとんと爆弾がぶつかった際のGameOver表記とブラックアウトの描画の関数
     引数：sikaku, txt
+    戻り値：GameOver表記、ブラックアウト
     """
     sikaku = pg.Surface(WIDTH, HEIGHT)  
     pg.draw.rect(sikaku, (0, 0, 0), pg.Rect(WIDTH, HEIGHT))
@@ -51,7 +54,7 @@ def game_over(screen):  # 演習３
     sikaku.set_alpha(200)
 
     pg.display.update()
-
+    #print(test)
     time.sleep(5)
 
 
@@ -83,6 +86,7 @@ def main():
         if kk_rct.colliderect(bd_rct):  # 練習４
             # こうかとんと爆弾がぶつかったら(= True)
             game_over(screen)
+            
             return
         
         
