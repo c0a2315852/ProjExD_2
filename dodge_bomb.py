@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -10,6 +11,16 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 DERUTA = {pg.K_UP: (0, -5), pg.K_DOWN: (0, +5),
          pg.K_LEFT: (-5, 0), pg.K_RIGHT: (+5, 0)}  # 移動量辞書 練習1
+
+#houkou = {pg.K_UP: (0, -5)}  # 演習１
+
+accs = [a for a in range(1, 11)]  # 加速度のリスト
+for r in range(1, 11):
+    bb_img = pg.Surface((20*r, 20*r))
+    pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+
+
+cry_img = pg.image.load("fig/1.png")  # 泣いているこうかとん
 
 def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:  # 練習３
     """
@@ -23,6 +34,26 @@ def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:  # 練習３
     if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
         tate = False
     return yoko, tate
+
+def game_over(screen):  # 演習３
+    """
+    こうかとんと爆弾がぶつかった際のGameOver表記とブラックアウトの描画の関数
+    引数：sikaku, txt
+    """
+    sikaku = pg.Surface(WIDTH, HEIGHT)  
+    pg.draw.rect(sikaku, (0, 0, 0), pg.Rect(WIDTH, HEIGHT))
+            
+    screen.blit(cry_img, [500, 450])
+    fonto = pg.font.Font(None, 80)  
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+    screen.blit(txt, [600, 450])
+    screen.blit(cry_img, [975, 450])
+    sikaku.set_alpha(200)
+
+    pg.display.update()
+
+    time.sleep(5)
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -44,17 +75,19 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     while True:
+        
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
             
         if kk_rct.colliderect(bd_rct):  # 練習４
             # こうかとんと爆弾がぶつかったら(= True)
-            print("Game Over")
+            game_over(screen)
             return
         
-        screen.blit(bg_img, [0, 0])
         
+        screen.blit(bg_img, [0, 0])
+
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         '''
